@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <cstring>
 
 const int INF = 0x3f3f3f3f;
@@ -39,7 +40,6 @@ private:
 
 public:
     simplex();
-    ~simplex();
 
     void read_data();
     void print_tableau(struct tableau *T);
@@ -49,12 +49,17 @@ public:
 
 simplex::simplex()
 {
-    memset(certificate, 0, sizeof(double));
-    memset(viable_solution, 0, sizeof(double));
-}
+    for(int i = 0; i < 100; i++){
+        certificate[i] = 0;
+        viable_solution[i] = 0;
+    }
 
-simplex::~simplex()
-{
+    for(int i = 0; i < 300; i++){
+        for(int j = 0; j < 300; j++){
+            auxiliary_tableau.M[i][j] = 0;
+            primary_tableau.M[i][j] = 0;
+        }
+    }
 }
 
 void simplex::read_data()
@@ -77,8 +82,6 @@ void simplex::read_data()
 
 void simplex::build_auxiliary()
 {
-    memset(auxiliary_tableau.M, 0, sizeof(double));
-
     auxiliary_tableau.n = n;
     auxiliary_tableau.m = m + n;
 
@@ -110,8 +113,6 @@ void simplex::build_auxiliary()
 }
 void simplex::build_primary()
 {
-    memset(primary_tableau.M, 0, sizeof(double));
-
     primary_tableau.n = n;
     primary_tableau.m = m;
 
@@ -286,7 +287,8 @@ void simplex::optimal(struct tableau *T)
     std::cout << std::endl;
 }
 int main(){
-    simplex S;
+    std::cout << std::setprecision(3);
+    struct simplex S = simplex();
 
     S.read_data();
     S.execute();
