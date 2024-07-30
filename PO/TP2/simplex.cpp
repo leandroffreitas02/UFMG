@@ -81,8 +81,7 @@ void simplex::read_data(char *filename)
     }
 
 }
-
-void simplex::build_auxiliary()
+void simplex::build_auxiliary() // Build Auxiliary Tableau
 {
     auxiliary_tableau.n = n;
     auxiliary_tableau.m = m + n;
@@ -113,7 +112,7 @@ void simplex::build_auxiliary()
         }
     }
 }
-void simplex::build_primary()
+void simplex::build_primary() // Build Primary Tableau
 {
     primary_tableau.n = n;
     primary_tableau.m = m;
@@ -141,7 +140,7 @@ void simplex::print_tableau(struct tableau *T)
 
     std::cout << std::endl;
 }
-void simplex::pivot(struct tableau *T, int i, int j)
+void simplex::pivot(struct tableau *T, int i, int j) // Pivots position i, j of a tableau
 {
     if(j >= T->n + T->m)
         return;
@@ -162,12 +161,12 @@ void simplex::pivot(struct tableau *T, int i, int j)
     //std::cout << i << ' ' << j << std::endl;
     //print_tableau(T);
 }
-void simplex::canonical(struct tableau *T)
+void simplex::canonical(struct tableau *T) // Turn a tableau into a canonical tableau 
 {
     for(int i = 0; i < n; i++)
         pivot(T, i+1, B[i]);
 }
-int simplex::negative_column(struct tableau *T)
+int simplex::negative_column(struct tableau *T) // Returns index of smallest negative column (or -1, if there is none)
 {
     int ret = -1;
     int aux = 0;
@@ -181,7 +180,7 @@ int simplex::negative_column(struct tableau *T)
 
     return ret;
 }
-double simplex::obj_value(struct tableau *T)
+double simplex::obj_value(struct tableau *T) //returns objective value of a tableau (after performing simpex operations)
 {
 
     canonical(T);
@@ -213,7 +212,7 @@ double simplex::obj_value(struct tableau *T)
 
     return T->M[0][T->n + T->m];
 }
-void simplex::execute()
+void simplex::execute() //execute simplex
 {
     build_auxiliary();
     //print_tableau(&auxiliary_tableau);
