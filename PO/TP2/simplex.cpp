@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
-#include <cstring>
+#include <fstream>
+#include <string>
 
 const int INF = 0x3f3f3f3f;
 const double eps = 1e-6;
@@ -14,19 +15,19 @@ private:
     struct tableau
     {
         int n, m;
-        double M[300][300];
+        double M[600][600];
     };
 
     struct tableau auxiliary_tableau;
     struct tableau primary_tableau;
     
-    double a[100][100];
-    double b[100];
-    double c[100];
+    double a[200][200];
+    double b[200];
+    double c[200];
 
-    int B[100];
-    double certificate[100];
-    double viable_solution[100];
+    int B[200];
+    double certificate[200];
+    double viable_solution[200];
 
     void build_auxiliary();
     void build_primary();
@@ -41,7 +42,7 @@ private:
 public:
     simplex();
 
-    void read_data();
+    void read_data(char *filename);
     void print_tableau(struct tableau *T);
     double obj_value(struct tableau *T);
     void execute();
@@ -49,12 +50,12 @@ public:
 
 simplex::simplex()
 {
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 200; i++){
         certificate[i] = 0;
         viable_solution[i] = 0;
     }
 
-    for(int i = 0; i < 300; i++){
+    for(int i = 0; i < 600; i++){
         for(int j = 0; j < 300; j++){
             auxiliary_tableau.M[i][j] = 0;
             primary_tableau.M[i][j] = 0;
@@ -62,19 +63,20 @@ simplex::simplex()
     }
 }
 
-void simplex::read_data()
+void simplex::read_data(char *filename)
 {
-    std::cin >> n >> m;
+    std::ifstream file(filename);
+    file >> n >> m;
 
     for(int i = 0; i < m; i++){
-        std::cin >> c[i];
+        file >> c[i];
     }
 
     for(int i = 0; i < n; i++){
         for(int j = 0; j < m; j++){
-            std::cin >> a[i][j];
+            file >> a[i][j];
         }
-        std::cin >> b[i];
+        file >> b[i];
 
     }
 
@@ -286,10 +288,10 @@ void simplex::optimal(struct tableau *T)
     }
     std::cout << std::endl;
 }
-int main(){
-    std::cout << std::setprecision(3);
+int main(int argc, char** argv){
+    std::cout << std::fixed << std::setprecision(3);
     struct simplex S = simplex();
 
-    S.read_data();
+    S.read_data(argv[1]);
     S.execute();
 }
