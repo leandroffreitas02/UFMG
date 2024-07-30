@@ -191,7 +191,7 @@ double simplex::obj_value(struct tableau *T) //returns objective value of a tabl
         int r = -1;
         double t = INF;
 
-        for(int i = 1; i < T->n + 1; i++) if(T->M[i][k] > 0){
+        for(int i = 1; i < T->n + 1; i++) if(T->M[i][k] > eps){
             if(T->M[i][T->n + T->m] / T->M[i][k] < t){
                 t = T->M[i][T->n + T->m] / T->M[i][k];
                 r = i-1;
